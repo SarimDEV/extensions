@@ -9,10 +9,12 @@ downloads is that exact one before installing it.
 
 1. Put the extension's source in a public GitHub repo. New to it? The prompts at
    [blipbar.app/docs](https://blipbar.app/docs/) get an AI to build one with you.
-2. In its folder, run `npx blipkit pack`. It makes `<name>-<version>.blipbar`.
-3. Make a GitHub release of that version (tag it `v1.2.0`, say) and attach the file.
-4. Get the file's hash: `shasum -a 256 <name>-<version>.blipbar`.
-5. Open a pull request here that adds `extensions/<your id>.json`:
+2. In its folder, run `npx blipkit pack`. It makes `<name>-<version>.blipbar`, and prints
+   the file's SHA-256 and the entry to add here (with `repository` set in `package.json`, the
+   entry is complete).
+3. Make a GitHub release of that version, tagged `v<version>` (`v1.2.0`, say), and attach
+   the file.
+4. Fork this repo and open a pull request that adds `extensions/<your id>.json`:
 
    ```json
    {

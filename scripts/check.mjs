@@ -50,7 +50,7 @@ for (const file of files) {
         "",
         manifest.description ?? "",
         "",
-        `- Reaches: ${(reach.network ?? []).join(", ") || "nothing on the internet"}`,
+        `- Reaches: ${(reach.network ?? []).map((host) => hostWords(host, manifest.preferences)).join(", ") || "nothing on the internet"}`,
         `- Runs: ${(reach.exec ?? []).join(", ") || "no programs"}`,
         `- Files: ${(reach.files ?? []).join(", ") || "none declared"}`,
         `- Signs in to: ${signIns(manifest.oauth).join(", ") || "nothing"}`,
@@ -80,3 +80,11 @@ const text = sections.join("\n\n") || "No entries changed.";
 console.log(text);
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${text}\n`);
 process.exit(failed ? 1 : 0);
+
+/** `{pages}` is whatever is typed into that setting: say so, by the setting's own title, as the app does. */
+function hostWords(host, preferences = []) {
+  const setting = /^\{(\w+)\}$/.exec(host);
+  if (!setting) return host;
+  const title = preferences.find((p) => p.name === setting[1])?.title ?? setting[1];
+  return `any address typed into its "${title}" setting (${host})`;
+}
